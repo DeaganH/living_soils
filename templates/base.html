@@ -90,6 +90,14 @@
               {% csrf_token %}
               <input type="hidden" name="next" value="{{ request.path }}">
               <div class="mb-3">
+                <label class="form-label" for="signup_first_name">First Name</label>
+                <input class="form-control" id="signup_first_name" name="first_name" type="text" autocomplete="given-name" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="signup_last_name">Last Name</label>
+                <input class="form-control" id="signup_last_name" name="last_name" type="text" autocomplete="family-name" required>
+              </div>
+              <div class="mb-3">
                 <label class="form-label" for="signup_email">Email</label>
                 <input class="form-control" id="signup_email" name="email" type="email" autocomplete="email" required>
               </div>

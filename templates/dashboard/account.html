@@ -5,6 +5,14 @@
 {% block dash_content %}
 <div class="dash-card">
   <div class="dash-card__row">
+    <div class="dash-card__label">First Name</div>
+    <div class="dash-card__value">{{ request.user.first_name|default:"-" }}</div>
+  </div>
+  <div class="dash-card__row">
+    <div class="dash-card__label">Last Name</div>
+    <div class="dash-card__value">{{ request.user.last_name|default:"-" }}</div>
+  </div>
+  <div class="dash-card__row">
     <div class="dash-card__label">Username</div>
     <div class="dash-card__value">{{ request.user.username }}</div>
   </div>

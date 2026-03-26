@@ -91,11 +91,13 @@ def modal_signup(request):
     if not form.is_valid():
         for err in form.errors.get("__all__", []) or []:
             messages.error(request, err)
-        for field in ("email", "password1", "password2"):
+        for field in ("first_name", "last_name", "email", "password1", "password2"):
             for err in form.errors.get(field, []) or []:
                 messages.error(request, err)
         return redirect(_with_query(next_url, auth="signup", auth_error=1))
 
+    first_name = form.cleaned_data["first_name"]
+    last_name = form.cleaned_data["last_name"]
     email = form.cleaned_data["email"]
     password = form.cleaned_data["password1"]
 
@@ -107,7 +109,13 @@ def modal_signup(request):
         return redirect(_with_query(next_url, auth="signup", auth_error=1))
 
     User = get_user_model()
-    user = User.objects.create_user(username=email, email=email, password=password)
+    user = User.objects.create_user(
+        username=email,
+        email=email,
+        first_name=first_name,
+        last_name=last_name,
+        password=password,
+    )
     login(request, user)
     return redirect(next_url)
 

@@ -4,9 +4,17 @@ from django.core.exceptions import ValidationError
 
 
 class SignUpForm(forms.Form):
+    first_name = forms.CharField(label="First name", max_length=150)
+    last_name = forms.CharField(label="Last name", max_length=150)
     email = forms.EmailField(label="Email", max_length=254)
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(label="Confirm password", widget=forms.PasswordInput)
+
+    def clean_first_name(self):
+        return self.cleaned_data["first_name"].strip()
+
+    def clean_last_name(self):
+        return self.cleaned_data["last_name"].strip()
 
     def clean_email(self):
         email = self.cleaned_data["email"].strip().lower()
