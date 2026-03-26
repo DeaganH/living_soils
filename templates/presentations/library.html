@@ -30,15 +30,65 @@
         {% endif %}
       </div>
       <div class="dash-table__end">
-        <a class="dash-link" href="{% url 'presentations:detail' p.id %}">View</a>
-        {% if perms.presentations.delete_presentation %}
-          <span class="dash-table__muted"> · </span>
-          <a class="dash-link" href="{% url 'presentations:delete' p.id %}">Delete</a>
-        {% endif %}
+        <div class="dash-table__actions">
+          <a class="dash-btn dash-btn--ghost dash-btn--small" href="{% url 'presentations:detail' p.id %}">View</a>
+          <button
+            class="dash-btn dash-btn--danger dash-btn--small"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteLibraryReportModal"
+            data-delete-url="{% url 'presentations:delete' p.id %}"
+            data-file-name="{{ p.file_name|escape }}"
+          >
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   {% empty %}
     <div class="dash-empty">No uploads yet.</div>
   {% endfor %}
 </div>
+
+<div class="modal fade confirm-modal" id="deleteLibraryReportModal" tabindex="-1" aria-labelledby="deleteLibraryReportModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteLibraryReportModalLabel">Delete Report</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="confirm-modal__text">Are you sure you want to delete <strong id="deleteLibraryReportName"></strong>?</p>
+        <p class="confirm-modal__subtext">This will permanently remove the report file and its associated data.</p>
+        <form id="deleteLibraryReportForm" method="post" action="">
+          {% csrf_token %}
+          <div class="dash-actions confirm-modal__actions">
+            <button class="dash-btn dash-btn--danger" type="submit">Delete Report</button>
+            <button class="dash-btn dash-btn--ghost" type="button" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var modalEl = document.getElementById('deleteLibraryReportModal');
+    if (!modalEl) return;
+
+    modalEl.addEventListener('show.bs.modal', function (event) {
+      var trigger = event.relatedTarget;
+      if (!trigger) return;
+
+      var action = trigger.getAttribute('data-delete-url') || '';
+      var fileName = trigger.getAttribute('data-file-name') || 'this report';
+      var form = document.getElementById('deleteLibraryReportForm');
+      var nameEl = document.getElementById('deleteLibraryReportName');
+
+      if (form) form.setAttribute('action', action);
+      if (nameEl) nameEl.textContent = fileName;
+    });
+  })();
+</script>
 {% endblock %}

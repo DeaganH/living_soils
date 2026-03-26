@@ -27,3 +27,8 @@ media/
 # macOS / Windows
 .DS_Store
 Thumbs.db
+
+# testing
+test_files/
+dev_docs/
+test.ipynb

@@ -1,11 +1,12 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views import View
+from django.views.decorators.http import require_POST
 
 from .forms import PresentationUploadForm
 from .models import Feedback, Presentation
@@ -93,12 +94,29 @@ def status_feed(request):
     return JsonResponse({"items": payload})
 
 
-@permission_required("presentations.delete_presentation")
+@login_required
+@require_POST
 def delete(request, pk: int):
     presentation = get_object_or_404(Presentation.objects.filter(uploaded_by=request.user), pk=pk)
-    if request.method == "POST":
-        presentation.file.delete(save=False)
-        presentation.delete()
-        messages.success(request, "Presentation deleted.")
-        return redirect(reverse("dashboard:soil_reports"))
-    return render(request, "presentations/confirm_delete.html", {"presentation": presentation})
+    presentation.file.delete(save=False)
+    presentation.delete()
+    messages.success(request, "Report deleted.")
+    return redirect(reverse("dashboard:soil_reports"))
+
+
+@login_required
+@require_POST
+def retry(request, pk: int):
+    presentation = get_object_or_404(Presentation.objects.filter(uploaded_by=request.user), pk=pk)
+
+    if presentation.status != Presentation.Status.FAILED:
+        messages.warning(request, "Only failed documents can be retried.")
+    else:
+        presentation.status = Presentation.Status.PENDING
+        presentation.error_message = ""
+        presentation.save(update_fields=["status", "error_message"])
+        enqueue_presentation(presentation.id)
+        messages.success(request, "Retry queued. Processing will continue in the background.")
+
+    next_url = request.POST.get("next") or reverse("dashboard:soil_report_detail", args=[presentation.id])
+    return redirect(next_url)

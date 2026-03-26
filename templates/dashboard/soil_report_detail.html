@@ -7,6 +7,16 @@
   <a class="dash-link" href="{% url 'dashboard:soil_reports' %}">← Back to Soil Reports</a>
 </div>
 
+{% if presentation.status == 'FAILED' %}
+  <div class="dash-actions">
+    <form method="post" action="{% url 'presentations:retry' presentation.id %}">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{% url 'dashboard:soil_report_detail' presentation.id %}">
+      <button class="dash-btn dash-btn--ghost" type="submit">Retry Processing</button>
+    </form>
+  </div>
+{% endif %}
+
 <div class="dash-card">
   <div class="dash-card__row">
     <div class="dash-card__label">File</div>
@@ -28,15 +38,12 @@
 
 {% if feedback %}
   <div class="dash-card">
-    <h2 class="dash-h2">Summary</h2>
-    <p class="dash-p">{{ feedback.summary }}</p>
-
-    <h2 class="dash-h2">Detailed Feedback</h2>
+    <h2 class="dash-h2">Report Data</h2>
     <div class="dash-pre">{{ feedback.detailed_feedback }}</div>
 
-    <div class="dash-meta">Tokens: in {{ feedback.input_tokens }} / out {{ feedback.output_tokens }} | API timestamp: {{ feedback.api_timestamp|date:"Y-m-d H:i" }}</div>
+    <div class="dash-meta">API timestamp: {{ feedback.api_timestamp|date:"Y-m-d H:i" }}</div>
   </div>
 {% else %}
-  <div class="dash-empty">No extracted details yet.</div>
+  <div class="dash-empty">No report data available yet.</div>
 {% endif %}
 {% endblock %}

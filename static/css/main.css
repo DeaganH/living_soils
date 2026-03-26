@@ -135,6 +135,11 @@ body { background: #f8f9fa; }
 	color: #f4f0e6;
 }
 
+.dash-btn--small {
+	padding: 6px 10px;
+	font-size: 0.85rem;
+}
+
 .dash-btn:hover { filter: brightness(1.05); color: #fff; }
 
 .dash-btn--ghost {
@@ -208,12 +213,26 @@ body { background: #f8f9fa; }
 }
 
 .dash-table { border-radius: 16px; overflow: hidden; border: 1px solid rgba(0,0,0,0.10); background: rgba(255,255,255,0.72); }
-.dash-table__head, .dash-table__row { display: grid; grid-template-columns: 2fr 1fr 1fr 90px; gap: 10px; padding: 12px 14px; align-items: center; }
+.dash-table__head, .dash-table__row { display: grid; grid-template-columns: 2fr 1fr 1fr 180px; gap: 10px; padding: 12px 14px; align-items: center; }
 .dash-table__head { background: rgba(47, 74, 42, 0.10); font-weight: 850; color: rgba(0,0,0,0.68); }
 .dash-table__row { border-top: 1px solid rgba(0,0,0,0.07); }
 .dash-table__file { font-weight: 800; color: rgba(0,0,0,0.72); }
 .dash-table__muted { color: rgba(0,0,0,0.52); }
-.dash-table__end { text-align: right; }
+.dash-table__end {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+.dash-table__actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 8px;
+	flex-wrap: nowrap;
+	white-space: nowrap;
+	width: 100%;
+}
+.dash-inline-form { display: inline-flex; }
 
 .dash-pill { display: inline-flex; padding: 6px 10px; border-radius: 999px; background: rgba(0,0,0,0.08); font-weight: 800; font-size: 0.85rem; }
 .dash-pill--ok { background: rgba(46, 125, 50, 0.16); color: #1b5e20; }
@@ -288,6 +307,41 @@ body { background: #f8f9fa; }
 .info-modal__body {
 	color: rgba(244, 240, 230, 0.92);
 	line-height: 1.45;
+}
+
+/* Confirmation modal */
+.confirm-modal .modal-content {
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-radius: 14px;
+	overflow: hidden;
+	background: linear-gradient(180deg, #2f4a2a 0%, #1f331d 100%);
+	color: #f4f0e6;
+}
+
+.confirm-modal .modal-header {
+	border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.confirm-modal .modal-body {
+	background: rgba(0,0,0,0.12);
+	padding: 20px;
+}
+
+.confirm-modal__text {
+	margin: 0 0 8px;
+	font-size: 1rem;
+	color: rgba(244, 240, 230, 0.96);
+}
+
+.confirm-modal__subtext {
+	margin: 0 0 18px;
+	color: rgba(244, 240, 230, 0.76);
+	line-height: 1.45;
+}
+
+.confirm-modal__actions {
+	margin-bottom: 0;
+	justify-content: flex-start;
 }
 
 /* Home page (reference-layout recreation with placeholders) */

@@ -13,30 +13,43 @@ def call_llm_api(file_obj, file_name: str) -> Dict[str, Any]:
     if not settings.LLM_API_URL:
         raise LLMClientError("LLM_API_URL is not configured")
 
-    headers = {"Authorization": f"Bearer {settings.LLM_API_KEY}"} if settings.LLM_API_KEY else {}
+    file_obj.seek(0)
+    if not file_obj.read(1):
+        raise LLMClientError("Uploaded PDF is empty")
+    file_obj.seek(0)
+
+    headers = {"x-authorization": settings.LLM_API_KEY} if settings.LLM_API_KEY else {}
     response = requests.post(
         settings.LLM_API_URL,
         files={"file": (file_name, file_obj, "application/pdf")},
         headers=headers,
-        timeout=60,
+        timeout=90,
     )
     if response.status_code >= 400:
         raise LLMClientError(f"LLM API error: {response.status_code} {response.text}")
 
     data = response.json()
     # Basic schema validation
-    required_keys = {
-        "summary",
-        "detailed_feedback",
-        "input_tokens",
-        "output_tokens",
-        "time_stamp",
-    }
+    required_keys = {'datetimestamp',
+                      'file_name', 
+                      'ocr_used', 
+                      'Analysis', 
+                      'Client', 
+                      'Report_Number', 
+                      'Number_of_Samples', 
+                      'Sample_Type', 
+                      'Condition', 
+                      'Delivery_Date', 
+                      'Delivery_Time', 
+                      'Order_Number', 
+                      'test_results'
+                      }
+    
     if not required_keys.issubset(data.keys()):
         raise LLMClientError("LLM API response missing required fields")
 
     # Normalize timestamp
-    if isinstance(data["time_stamp"], str):
-        data["time_stamp"] = datetime.fromisoformat(data["time_stamp"].replace("Z", "+00:00"))
+    if isinstance(data["datetimestamp"], str):
+        data["datetimestamp"] = datetime.fromisoformat(data["datetimestamp"].replace("Z", "+00:00"))
 
     return data

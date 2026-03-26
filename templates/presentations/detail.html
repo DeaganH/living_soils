@@ -28,15 +28,12 @@
 
 {% if feedback %}
   <div class="dash-card">
-    <h2 class="dash-h2">Summary</h2>
-    <p class="dash-p">{{ feedback.summary }}</p>
-
-    <h2 class="dash-h2">Detailed Feedback</h2>
+    <h2 class="dash-h2">Report Data</h2>
     <div class="dash-pre">{{ feedback.detailed_feedback }}</div>
 
-    <div class="dash-meta">Tokens: in {{ feedback.input_tokens }} / out {{ feedback.output_tokens }} | API timestamp: {{ feedback.api_timestamp|date:"Y-m-d H:i" }}</div>
+    <div class="dash-meta">API timestamp: {{ feedback.api_timestamp|date:"Y-m-d H:i" }}</div>
   </div>
 {% else %}
-  <div class="dash-empty">No extracted details yet.</div>
+  <div class="dash-empty">No report data available yet.</div>
 {% endif %}
 {% endblock %}
