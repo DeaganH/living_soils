@@ -1,0 +1,14 @@
+{% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block dash_title %}Upload Soil Report{% endblock %}
+
+{% block dash_content %}
+<div class="dash-card">
+  <form method="post" enctype="multipart/form-data" class="dash-form">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button class="dash-btn" type="submit">Upload</button>
+  </form>
+</div>
+{% endblock %}

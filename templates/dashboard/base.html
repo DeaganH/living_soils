@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block navbar %}{% endblock %}
+{% block container_class %}container-fluid p-0{% endblock %}
+{% block body_class %}dashboard-body{% endblock %}
+
+{% block content %}
+<div class="dash">
+  <aside class="dash__sidebar">
+    <a class="dash__brand" href="{% url 'dashboard:index' %}">
+      <img class="dash__brand-icon" src="{% static 'images/plant_icon.png' %}" alt="" aria-hidden="true">
+      <span class="dash__brand-name">Living Soils</span>
+    </a>
+
+    <nav class="dash__nav" aria-label="Dashboard navigation">
+      <a class="dash__link {% if request.resolver_match.url_name == 'my_account' %}is-active{% endif %}" href="{% url 'dashboard:my_account' %}">My Account</a>
+      <a class="dash__link {% if request.resolver_match.url_name == 'soil_reports' or request.resolver_match.url_name == 'soil_report_detail' %}is-active{% endif %}" href="{% url 'dashboard:soil_reports' %}">Soil Reports</a>
+      <a class="dash__link {% if request.resolver_match.url_name == 'student_records' %}is-active{% endif %}" href="{% url 'dashboard:student_records' %}">Student Record</a>
+      <a class="dash__link {% if request.resolver_match.url_name == 'soil_samples' %}is-active{% endif %}" href="{% url 'dashboard:soil_samples' %}">Soil Sample Tracking</a>
+      <a class="dash__link {% if request.resolver_match.url_name == 'student_feedback' %}is-active{% endif %}" href="{% url 'dashboard:student_feedback' %}">Student Feedback</a>
+    </nav>
+
+    <div class="dash__footer">
+      <div class="dash__user">{{ request.user.email|default:request.user.username }}</div>
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button class="dash__logout" type="submit">Logout</button>
+      </form>
+    </div>
+  </aside>
+
+  <main class="dash__main">
+    <header class="dash__top">
+      <h1 class="dash__title">{% block dash_title %}{% endblock %}</h1>
+    </header>
+
+    <section class="dash__content">
+      {% block dash_content %}{% endblock %}
+    </section>
+  </main>
+</div>
+{% endblock %}

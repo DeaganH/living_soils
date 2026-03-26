@@ -1,0 +1,42 @@
+{% extends "dashboard/base.html" %}
+
+{% block dash_title %}Soil Report{% endblock %}
+
+{% block dash_content %}
+<div class="dash-breadcrumb">
+  <a class="dash-link" href="{% url 'presentations:library' %}">← Back to Soil Reports</a>
+</div>
+
+<div class="dash-card">
+  <div class="dash-card__row">
+    <div class="dash-card__label">File</div>
+    <div class="dash-card__value">{{ presentation.file_name }}</div>
+  </div>
+  <div class="dash-card__row">
+    <div class="dash-card__label">Uploaded</div>
+    <div class="dash-card__value">{{ presentation.uploaded_at|date:"Y-m-d H:i" }}</div>
+  </div>
+  <div class="dash-card__row">
+    <div class="dash-card__label">Status</div>
+    <div class="dash-card__value">{{ presentation.status }}</div>
+  </div>
+</div>
+
+{% if presentation.status == 'FAILED' %}
+  <div class="dash-alert dash-alert--bad">{{ presentation.error_message|default:"Processing failed" }}</div>
+{% endif %}
+
+{% if feedback %}
+  <div class="dash-card">
+    <h2 class="dash-h2">Summary</h2>
+    <p class="dash-p">{{ feedback.summary }}</p>
+
+    <h2 class="dash-h2">Detailed Feedback</h2>
+    <div class="dash-pre">{{ feedback.detailed_feedback }}</div>
+
+    <div class="dash-meta">Tokens: in {{ feedback.input_tokens }} / out {{ feedback.output_tokens }} | API timestamp: {{ feedback.api_timestamp|date:"Y-m-d H:i" }}</div>
+  </div>
+{% else %}
+  <div class="dash-empty">No extracted details yet.</div>
+{% endif %}
+{% endblock %}

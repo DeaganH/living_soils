@@ -1,0 +1,31 @@
+{% extends "dashboard/base.html" %}
+
+{% block dash_title %}Student Record{% endblock %}
+
+{% block dash_content %}
+<div class="dash-card">
+  <h2 class="dash-h2">Your Reports</h2>
+  <p class="dash-meta">These reports are uploaded by your lecturer. You can view and download them, but you can’t edit them.</p>
+
+  {% if reports %}
+    <div class="dash-table mt-3">
+      <div class="dash-table__head" style="grid-template-columns: 1fr 2fr 110px;">
+        <div>Date</div>
+        <div>Report</div>
+        <div class="dash-table__end">PDF</div>
+      </div>
+      {% for r in reports %}
+        <div class="dash-table__row" style="grid-template-columns: 1fr 2fr 110px;">
+          <div class="dash-table__muted">{{ r.report_date|date:"Y-m-d" }}</div>
+          <div class="dash-table__file">{{ r.title|default:"Report" }}</div>
+          <div class="dash-table__end">
+            <a class="dash-btn dash-btn--ghost" href="{{ r.pdf.url }}" target="_blank" rel="noopener">Open</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="dash-empty mt-3">No reports have been uploaded yet.</div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block navbar %}{% endblock %}
+{% block container_class %}container-fluid p-0{% endblock %}
+{% block body_class %}home-body{% endblock %}
+
+{% block content %}
+<div class="home-shell">
+  <header class="home-nav">
+    <div class="home-nav__inner">
+      <div class="home-brand" aria-label="Living Soils">
+        <img class="home-brand__icon" src="{% static 'images/plant_icon.png' %}" alt="" aria-hidden="true">
+        <span class="home-brand__name">Living Soils</span>
+      </div>
+      <div class="dropdown">
+        <button class="home-nav__menu" type="button" aria-label="Menu" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="home-nav__burger" aria-hidden="true"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end home-nav__dropdown">
+          <li><a class="dropdown-item" href="{% url 'home' %}">Home</a></li>
+          <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#authModal" data-auth-tab="login">Log In</button></li>
+          <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#authModal" data-auth-tab="signup">Create Account</button></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <section class="home-hero" style="--home-hero-image: url('{% static 'images/home_banner_1.png' %}'); --home-hero-bg-size: cover; --home-hero-bg-pos: 50% 30%;">
+    <div class="home-hero__overlay"></div>
+    <div class="home-hero__content">
+      <h1 class="home-hero__title">Cultivating Healthy<br>Communities</h1>
+      <p class="home-hero__subtitle">Through Soil Education</p>
+    </div>
+  </section>
+
+  <section class="home-actions" aria-label="Primary actions">
+    <div class="home-actions__inner">
+      <a class="home-card js-info" href="#" data-bs-toggle="modal" data-bs-target="#infoModal"
+         data-info-title="Upload Your Soil Report"
+         data-info-body="Upload your soil report to get personalized insights. Once you log in, you’ll be able to submit a report and we’ll organize your results in your library for easy reference.">
+        <div class="home-card__icon" aria-hidden="true">
+          <img class="home-icon" src="{% static 'images/upload_icon.png' %}" alt="" aria-hidden="true">
+        </div>
+        <div class="home-card__label">Upload Your Soil Report</div>
+      </a>
+
+      <a class="home-card js-info" href="#" data-bs-toggle="modal" data-bs-target="#infoModal"
+         data-info-title="Get Soil Analysis"
+         data-info-body="See a clear summary and detailed recommendations based on your submitted report. Log in to view analyses, download results, and compare them over time.">
+        <div class="home-card__icon" aria-hidden="true">
+          <img class="home-icon" src="{% static 'images/report_icon.png' %}" alt="" aria-hidden="true">
+        </div>
+        <div class="home-card__label">Get Soil Analysis</div>
+      </a>
+
+      <a class="home-card js-info" href="#" data-bs-toggle="modal" data-bs-target="#infoModal"
+         data-info-title="Track Trends Over Time"
+         data-info-body="Track how your soil health changes across seasons and improvements. Log in to build a history of results and spot trends at a glance.">
+        <div class="home-card__icon" aria-hidden="true">
+          <img class="home-icon" src="{% static 'images/trends_icon.png' %}" alt="" aria-hidden="true">
+        </div>
+        <div class="home-card__label">Track Trends Over Time</div>
+      </a>
+    </div>
+  </section>
+
+  <section class="home-cta" aria-label="Call to action" style="--home-cta-image: url('{% static 'images/home_banner_2_1.png' %}'); --home-cta-bg-size: cover; --home-cta-bg-pos: 50% 45%;">
+    <div class="home-cta__overlay"></div>
+    <div class="home-cta__content">
+      <h2 class="home-cta__title">Helping Students<br>Understand &amp; Care for the Soil</h2>
+      <p class="home-cta__subtitle">Join our mission to teach sustainable agriculture and soil health.</p>
+      <div class="home-cta__buttons">
+        <button class="btn home-btn home-btn--light" type="button" data-bs-toggle="modal" data-bs-target="#authModal" data-auth-tab="login">Log In</button>
+        <button class="btn home-btn home-btn--rust" type="button" data-bs-toggle="modal" data-bs-target="#authModal" data-auth-tab="signup">Create Account</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-footer-hero" aria-label="Closing message">
+    <div class="home-footer-hero__inner">
+      <div class="home-footer-hero__rule" aria-hidden="true"></div>
+      <h2 class="home-footer-hero__title">Grow, Learn, Thrive</h2>
+      <div class="home-footer-hero__rule" aria-hidden="true"></div>
+    </div>
+    <p class="home-footer-hero__subtitle">Join Living Soils and make a difference in your community.</p>
+    <div class="home-footer-hero__meta" aria-label="Contact and social links">
+      <div class="home-footer-hero__contact">
+        <div class="home-footer-hero__contact-title">Contact</div>
+        <a class="home-footer-hero__link" href="tel:+15551234567">(555) 123-4567</a>
+        <a class="home-footer-hero__link" href="mailto:hello@livingsouls.example">hello@livingsouls.example</a>
+      </div>
+
+      <div class="home-footer-hero__social" aria-label="Social links">
+        <a class="home-social" href="https://www.facebook.com" aria-label="Facebook (link placeholder)" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M14 8h2V5h-2c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.2l.8-3H13V9c0-.6.4-1 1-1Z" fill="currentColor"/>
+          </svg>
+        </a>
+        <a class="home-social" href="https://www.instagram.com" aria-label="Instagram (link placeholder)" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M8 3h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5Z" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M12 16.3a4.3 4.3 0 1 0 0-8.6 4.3 4.3 0 0 0 0 8.6Z" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M17.7 6.3h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </a>
+        <a class="home-social" href="https://www.youtube.com" aria-label="YouTube (link placeholder)" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="4" y="7" width="16" height="10" rx="3" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M10.3 9.7v4.6L15 12l-4.7-2.3Z" fill="currentColor"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal fade info-modal" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="infoModalLabel">Feature</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="info-modal__body mb-3">Description</p>
+          <div class="d-grid gap-2">
+            <button class="btn home-btn home-btn--light js-open-auth" type="button" data-auth-tab="login">Log In</button>
+            <button class="btn home-btn home-btn--rust js-open-auth" type="button" data-auth-tab="signup">Create Account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var infoModalEl = document.getElementById('infoModal');
+      if (!infoModalEl) return;
+
+      infoModalEl.addEventListener('show.bs.modal', function (event) {
+        var trigger = event.relatedTarget;
+        if (!trigger) return;
+        var title = trigger.getAttribute('data-info-title') || 'Feature';
+        var body = trigger.getAttribute('data-info-body') || '';
+        infoModalEl.querySelector('#infoModalLabel').textContent = title;
+        infoModalEl.querySelector('.info-modal__body').textContent = body;
+      });
+
+      infoModalEl.addEventListener('click', function (e) {
+        var btn = e.target.closest('.js-open-auth');
+        if (!btn) return;
+        var tab = btn.getAttribute('data-auth-tab') || 'login';
+
+        var infoModal = bootstrap.Modal.getOrCreateInstance(infoModalEl);
+        infoModal.hide();
+
+        infoModalEl.addEventListener('hidden.bs.modal', function once() {
+          infoModalEl.removeEventListener('hidden.bs.modal', once);
+          var authModalEl = document.getElementById('authModal');
+          if (!authModalEl) return;
+
+          var tabId = (tab === 'signup') ? '#auth-signup-tab' : '#auth-login-tab';
+          var tabEl = document.querySelector(tabId);
+          if (tabEl) bootstrap.Tab.getOrCreateInstance(tabEl).show();
+          bootstrap.Modal.getOrCreateInstance(authModalEl).show();
+        });
+      });
+
+      document.addEventListener('click', function (e) {
+        var link = e.target.closest('a.js-info');
+        if (!link) return;
+        e.preventDefault();
+      });
+    })();
+  </script>
+</div>
+{% endblock %}

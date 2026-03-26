@@ -1,0 +1,44 @@
+{% extends "dashboard/base.html" %}
+
+{% block dash_title %}Soil Reports{% endblock %}
+
+{% block dash_content %}
+<div class="dash-actions">
+  <a class="dash-btn" href="{% url 'presentations:upload' %}">Upload PDF</a>
+</div>
+
+<div class="dash-table">
+  <div class="dash-table__head">
+    <div>File</div>
+    <div>Uploaded</div>
+    <div>Status</div>
+    <div></div>
+  </div>
+  {% for p in presentations %}
+    <div class="dash-table__row">
+      <div class="dash-table__file">{{ p.file_name }}</div>
+      <div class="dash-table__muted">{{ p.uploaded_at|date:"Y-m-d H:i" }}</div>
+      <div>
+        {% if p.status == 'COMPLETE' %}
+          <span class="dash-pill dash-pill--ok">Complete</span>
+        {% elif p.status == 'PROCESSING' %}
+          <span class="dash-pill dash-pill--warn">Processing</span>
+        {% elif p.status == 'FAILED' %}
+          <span class="dash-pill dash-pill--bad">Failed</span>
+        {% else %}
+          <span class="dash-pill">Pending</span>
+        {% endif %}
+      </div>
+      <div class="dash-table__end">
+        <a class="dash-link" href="{% url 'presentations:detail' p.id %}">View</a>
+        {% if perms.presentations.delete_presentation %}
+          <span class="dash-table__muted"> · </span>
+          <a class="dash-link" href="{% url 'presentations:delete' p.id %}">Delete</a>
+        {% endif %}
+      </div>
+    </div>
+  {% empty %}
+    <div class="dash-empty">No uploads yet.</div>
+  {% endfor %}
+</div>
+{% endblock %}

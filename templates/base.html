@@ -1,0 +1,140 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Living Soils</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom mb-3">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'presentations:library' %}">Doc Sense</a>
+    <div class="d-flex">
+      {% if user.is_authenticated %}
+        <span class="navbar-text me-2">{{ user.username }}</span>
+        <a class="btn btn-outline-secondary btn-sm me-2" href="{% url 'presentations:upload' %}">Upload</a>
+        <form method="post" action="{% url 'logout' %}" class="d-inline">
+          {% csrf_token %}
+          <button class="btn btn-outline-danger btn-sm" type="submit">Logout</button>
+        </form>
+      {% else %}
+        <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#authModal" data-auth-tab="login">Login</button>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+{% endblock %}
+<div class="{% block container_class %}container{% endblock %}">
+  {% for message in messages %}
+    {% if 'error' in message.tags %}
+      <div class="alert alert-danger">{{ message }}</div>
+    {% elif 'success' in message.tags %}
+      <div class="alert alert-success">{{ message }}</div>
+    {% elif 'warning' in message.tags %}
+      <div class="alert alert-warning">{{ message }}</div>
+    {% else %}
+      <div class="alert alert-info">{{ message }}</div>
+    {% endif %}
+  {% endfor %}
+    {% block content %}{% endblock %}
+</div>
+
+{% if not user.is_authenticated %}
+<div class="modal fade auth-modal" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="authModalLabel">Welcome back</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% if request.GET.auth_error %}
+          <div class="alert alert-danger mb-3">Please check your details and try again.</div>
+        {% endif %}
+
+        <ul class="nav nav-tabs" id="authTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="auth-login-tab" data-bs-toggle="tab" data-bs-target="#auth-login" type="button" role="tab">Log In</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="auth-signup-tab" data-bs-toggle="tab" data-bs-target="#auth-signup" type="button" role="tab">Create Account</button>
+          </li>
+        </ul>
+
+        <div class="tab-content pt-3">
+          <div class="tab-pane fade show active" id="auth-login" role="tabpanel" aria-labelledby="auth-login-tab">
+            <form method="post" action="{% url 'modal_login' %}">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.path }}">
+              <div class="mb-3">
+                <label class="form-label" for="auth_email">Email</label>
+                <input class="form-control" id="auth_email" name="email" type="email" autocomplete="email" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="auth_password">Password</label>
+                <input class="form-control" id="auth_password" name="password" type="password" autocomplete="current-password" required>
+              </div>
+              <button class="btn btn-success w-100" type="submit">Log In</button>
+            </form>
+          </div>
+
+          <div class="tab-pane fade" id="auth-signup" role="tabpanel" aria-labelledby="auth-signup-tab">
+            <form method="post" action="{% url 'modal_signup' %}">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.path }}">
+              <div class="mb-3">
+                <label class="form-label" for="signup_email">Email</label>
+                <input class="form-control" id="signup_email" name="email" type="email" autocomplete="email" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="signup_password1">Password</label>
+                <input class="form-control" id="signup_password1" name="password1" type="password" autocomplete="new-password" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="signup_password2">Confirm Password</label>
+                <input class="form-control" id="signup_password2" name="password2" type="password" autocomplete="new-password" required>
+              </div>
+              <button class="btn btn-warning w-100" type="submit">Create Account</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+{% if not user.is_authenticated %}
+<script>
+  (function () {
+    function setActiveAuthTab(tab) {
+      var targetId = (tab === 'signup') ? '#auth-signup-tab' : '#auth-login-tab';
+      var tabEl = document.querySelector(targetId);
+      if (!tabEl) return;
+      bootstrap.Tab.getOrCreateInstance(tabEl).show();
+    }
+
+    document.addEventListener('click', function (e) {
+      var el = e.target.closest('[data-auth-tab]');
+      if (!el) return;
+      setActiveAuthTab(el.getAttribute('data-auth-tab'));
+    });
+
+    var params = new URLSearchParams(window.location.search);
+    var auth = params.get('auth');
+    if (auth === 'login' || auth === 'signup') {
+      setActiveAuthTab(auth);
+      var modalEl = document.getElementById('authModal');
+      if (modalEl) bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    }
+  })();
+</script>
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,14 @@
+{% extends "dashboard/base.html" %}
+
+{% block dash_title %}Delete Soil Report{% endblock %}
+
+{% block dash_content %}
+<div class="dash-card">
+  <p class="dash-p">Are you sure you want to delete <strong>{{ presentation.file_name }}</strong>? This cannot be undone.</p>
+  <form method="post" class="dash-actions">
+    {% csrf_token %}
+    <button type="submit" class="dash-btn dash-btn--danger">Delete</button>
+    <a class="dash-link" href="{% url 'presentations:library' %}">Cancel</a>
+  </form>
+</div>
+{% endblock %}

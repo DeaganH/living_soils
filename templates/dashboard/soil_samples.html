@@ -1,0 +1,95 @@
+{% extends "dashboard/base.html" %}
+
+{% block dash_title %}Soil Sample Tracking{% endblock %}
+
+{% block dash_content %}
+<div class="dash-grid">
+  <div class="dash-card">
+    <h2 class="dash-h2">Add Soil Sample</h2>
+    <form method="post" class="dash-form" id="soilSampleForm">
+      {% csrf_token %}
+
+      <div class="dash-row">
+        <div>
+          <label class="dash-label" for="id_plot_number">Plot Number</label>
+          {{ form.plot_number }}
+        </div>
+        <div>
+          <label class="dash-label" for="id_sample_depth_cm">Sample Depth (cm)</label>
+          {{ form.sample_depth_cm }}
+        </div>
+      </div>
+
+      <div class="dash-row">
+        <div>
+          <label class="dash-label" for="id_latitude">Latitude</label>
+          {{ form.latitude }}
+        </div>
+        <div>
+          <label class="dash-label" for="id_longitude">Longitude</label>
+          {{ form.longitude }}
+        </div>
+      </div>
+
+      <button class="dash-btn dash-btn--ghost" type="button" id="useLocationBtn">Use my current location</button>
+
+      <label class="dash-label mt-3" for="id_notes">Survey / Notes</label>
+      {{ form.notes }}
+
+      <button class="dash-btn mt-3" type="submit">Save Sample</button>
+    </form>
+  </div>
+
+  <div class="dash-card">
+    <h2 class="dash-h2">Your Samples</h2>
+    {% for s in samples %}
+      <div class="dash-item">
+        <div class="dash-meta">{{ s.created_at|date:"Y-m-d H:i" }}</div>
+        <div class="dash-item__grid">
+          <div><span class="dash-item__title">Plot:</span> {{ s.plot_number|default:"-" }}</div>
+          <div><span class="dash-item__title">Depth:</span> {% if s.sample_depth_cm %}{{ s.sample_depth_cm }} cm{% else %}-{% endif %}</div>
+          <div><span class="dash-item__title">Lat:</span> {{ s.latitude|default:"-" }}</div>
+          <div><span class="dash-item__title">Lng:</span> {{ s.longitude|default:"-" }}</div>
+        </div>
+        {% if s.notes %}
+          <div class="dash-item__text mt-2">{{ s.notes|linebreaksbr }}</div>
+        {% endif %}
+      </div>
+    {% empty %}
+      <div class="dash-empty">No soil samples yet.</div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var btn = document.getElementById('useLocationBtn');
+    var lat = document.getElementById('id_latitude');
+    var lng = document.getElementById('id_longitude');
+    if (!btn || !lat || !lng) return;
+
+    btn.addEventListener('click', function () {
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported in this browser.');
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Getting location…';
+      navigator.geolocation.getCurrentPosition(
+        function (pos) {
+          lat.value = pos.coords.latitude.toFixed(6);
+          lng.value = pos.coords.longitude.toFixed(6);
+          btn.disabled = false;
+          btn.textContent = 'Use my current location';
+        },
+        function () {
+          btn.disabled = false;
+          btn.textContent = 'Use my current location';
+          alert('Could not get your location. Please allow location access and try again.');
+        },
+        { enableHighAccuracy: true, timeout: 8000 }
+      );
+    });
+  })();
+</script>
+{% endblock %}

@@ -1,0 +1,11 @@
+Django
+psycopg2-binary==2.9.9
+django-environ
+django-q2
+requests==2.31.0
+whitenoise==6.6.0
+django-widget-tweaks
+django-crispy-forms
+crispy-bootstrap5
+PyPDF2==3.0.1
+gunicorn

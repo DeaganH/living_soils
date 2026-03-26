@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block navbar %}{% endblock %}
+{% block container_class %}container-fluid p-0{% endblock %}
+{% block body_class %}home-body{% endblock %}
+
+{% block content %}
+<div class="home-shell home-shell--full">
+  <header class="home-nav">
+    <div class="home-nav__inner">
+      <div class="home-brand" aria-label="Living Soils">
+        <img class="home-brand__icon" src="{% static 'images/plant_icon.png' %}" alt="" aria-hidden="true">
+        <span class="home-brand__name">Living Soils</span>
+      </div>
+      <div class="dropdown">
+        <button class="home-nav__menu" type="button" aria-label="Menu" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="home-nav__burger" aria-hidden="true"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end home-nav__dropdown">
+          <li><a class="dropdown-item" href="{% url 'home' %}">Home</a></li>
+          <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#authModal" data-auth-tab="login">Log In</button></li>
+          <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#authModal" data-auth-tab="signup">Create Account</button></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <section class="home-hero home-hero--logout" style="--home-hero-image: url('{% static 'images/log_out_1.png' %}'); --home-hero-bg-size: cover; --home-hero-bg-pos: 50% 35%;">
+    <div class="home-hero__overlay"></div>
+  </section>
+
+  <div class="modal fade info-modal" id="loggedOutModal" tabindex="-1" aria-labelledby="loggedOutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loggedOutModalLabel">You’ve been logged out</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="info-modal__body mb-3">Thanks for visiting Living Soils.</p>
+          <div class="d-grid gap-2">
+            <button class="btn home-btn home-btn--light" type="button" data-bs-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="home-footer-hero" aria-label="Closing message">
+    <div class="home-footer-hero__inner">
+      <div class="home-footer-hero__rule" aria-hidden="true"></div>
+      <h2 class="home-footer-hero__title">Grow, Learn, Thrive</h2>
+      <div class="home-footer-hero__rule" aria-hidden="true"></div>
+    </div>
+    <p class="home-footer-hero__subtitle">Join Living Soils and make a difference in your community.</p>
+    <div class="home-footer-hero__meta" aria-label="Contact and social links">
+      <div class="home-footer-hero__contact">
+        <div class="home-footer-hero__contact-title">Contact</div>
+        <a class="home-footer-hero__link" href="tel:+15551234567">(555) 123-4567</a>
+        <a class="home-footer-hero__link" href="mailto:hello@livingsouls.example">hello@livingsouls.example</a>
+      </div>
+
+      <div class="home-footer-hero__social" aria-label="Social links">
+        <a class="home-social" href="#" aria-label="Facebook (link placeholder)">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M14 8h2V5h-2c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.2l.8-3H13V9c0-.6.4-1 1-1Z" fill="currentColor"/>
+          </svg>
+        </a>
+        <a class="home-social" href="#" aria-label="Instagram (link placeholder)">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M8 3h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5Z" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M12 16.3a4.3 4.3 0 1 0 0-8.6 4.3 4.3 0 0 0 0 8.6Z" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M17.7 6.3h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </a>
+        <a class="home-social" href="#" aria-label="YouTube (link placeholder)">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="4" y="7" width="16" height="10" rx="3" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M10.3 9.7v4.6L15 12l-4.7-2.3Z" fill="currentColor"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      function showLoggedOutModal() {
+        var modalEl = document.getElementById('loggedOutModal');
+        if (!modalEl) return;
+        if (!window.bootstrap || !bootstrap.Modal) return;
+        bootstrap.Modal.getOrCreateInstance(modalEl).show();
+      }
+
+      if (document.readyState === 'complete') {
+        showLoggedOutModal();
+      } else {
+        window.addEventListener('load', showLoggedOutModal);
+      }
+    })();
+  </script>
+</div>
+{% endblock %}

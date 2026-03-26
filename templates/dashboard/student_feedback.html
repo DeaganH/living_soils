@@ -1,0 +1,22 @@
+{% extends "dashboard/base.html" %}
+
+{% block dash_title %}Student Feedback{% endblock %}
+
+{% block dash_content %}
+<div class="dash-center">
+  <div class="dash-card">
+    <h2 class="dash-h2">Send Feedback</h2>
+    <form method="post" class="dash-form">
+      {% csrf_token %}
+      <label class="dash-label" for="id_subject">Subject</label>
+      {{ form.subject }}
+
+      <label class="dash-label mt-3" for="id_message">Message</label>
+      {{ form.message }}
+
+      <button class="dash-btn mt-3" type="submit">Send</button>
+    </form>
+    <p class="dash-meta mt-3">This form saves your message; email sending is enabled when `STUDENT_FEEDBACK_TO_EMAIL` is configured.</p>
+  </div>
+</div>
+{% endblock %}

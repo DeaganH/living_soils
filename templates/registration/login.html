@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h4 mb-3">Login</h1>
+<form method="post" class="card card-body" novalidate>
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="id_username" class="form-label">Username</label>
+    <input type="text" name="username" autofocus required class="form-control" id="id_username">
+  </div>
+  <div class="mb-3">
+    <label for="id_password" class="form-label">Password</label>
+    <input type="password" name="password" required class="form-control" id="id_password">
+  </div>
+  {% if form.errors %}
+    <div class="alert alert-danger">Invalid credentials.</div>
+  {% endif %}
+  <button class="btn btn-primary" type="submit">Login</button>
+</form>
+{% endblock %}

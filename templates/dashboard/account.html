@@ -1,0 +1,20 @@
+{% extends "dashboard/base.html" %}
+
+{% block dash_title %}My Account{% endblock %}
+
+{% block dash_content %}
+<div class="dash-card">
+  <div class="dash-card__row">
+    <div class="dash-card__label">Username</div>
+    <div class="dash-card__value">{{ request.user.username }}</div>
+  </div>
+  <div class="dash-card__row">
+    <div class="dash-card__label">Email</div>
+    <div class="dash-card__value">{{ request.user.email|default:"-" }}</div>
+  </div>
+  <div class="dash-card__row">
+    <div class="dash-card__label">Joined</div>
+    <div class="dash-card__value">{{ request.user.date_joined|date:"Y-m-d H:i" }}</div>
+  </div>
+</div>
+{% endblock %}
