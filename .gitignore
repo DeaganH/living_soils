@@ -7,6 +7,8 @@ __pycache__/
 dist/
 build/
 .eggs/
+db.sqlite3
+*.pyc
 
 # Environments
 .env
